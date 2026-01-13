@@ -30,4 +30,5 @@ export class Product {
 
   @CreateDateColumn()
   createdAt: Date;
+  category: any;
 }
