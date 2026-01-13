@@ -5,7 +5,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true }) // ← Allow NULL initially
   name: string;
 
   @Column({ unique: true })
@@ -15,7 +15,7 @@ export class User {
   password: string;
 
   @Column({ default: 'buyer' })
-  role: string; // 'admin', 'buyer', 'seller', 'supplier'
+  role: string;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -1,9 +1,9 @@
-// src/app.module.ts (updated)
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-// import { AdminModule } from './admin/admin.module';
 import { BuyerModule } from './buyer/buyer.module';
 import { SellerModule } from './seller/seller.module';
 import { SupplierModule } from './supplier/supplier.module';
@@ -15,7 +15,6 @@ import { ReviewModule } from './review/review.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { User } from './user/user.entity';
-//import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -34,7 +33,6 @@ import { User } from './user/user.entity';
       logging: process.env.NODE_ENV === 'development',
     }),
     AuthModule,
-    // AdminModule,
     BuyerModule,
     SellerModule,
     SupplierModule,
@@ -45,8 +43,8 @@ import { User } from './user/user.entity';
     ReviewModule,
     NotificationsModule,
     TransactionsModule,
-    SellerModule,
-    //UserModule,
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
