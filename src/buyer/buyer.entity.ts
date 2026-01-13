@@ -8,4 +8,5 @@ export class Buyer extends User {
 
   @Column('text', { nullable: true })
   shippingAddress: string;
+  orders: any;
 }
