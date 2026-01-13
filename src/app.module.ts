@@ -1,5 +1,7 @@
+ 
+// src/app.module.ts (updated)
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 // import { AdminModule } from './admin/admin.module';
@@ -14,23 +16,25 @@ import { OrderModule } from './order/order.module';
 import { NotificationsModule } from './notifications/notifications.module';
 // import { TransactionsModule } from './transactions/transactions.module';
 import { User } from './user/user.entity';
+import { AuthModule } from './modules/auth/auth.module';
+import { SellerModule } from './modules/seller/seller.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get('DATABASE_HOST'),
-        port: +configService.get('DATABASE_PORT'),
-        username: configService.get('DATABASE_USER'),
-        password: configService.get('DATABASE_PASSWORD'),
-        database: configService.get('DATABASE_NAME'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true,
-      }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: process.env.DB_HOST || 'localhost',
+      port: parseInt(process.env.DB_PORT || '5432') || 5432,
+      username: process.env.DB_USERNAME || 'postgres',
+      password: process.env.DB_PASSWORD || 'Admin',
+      database: process.env.DB_NAME || 'NexifyStore',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: process.env.NODE_ENV !== 'production',
+      logging: process.env.NODE_ENV === 'development',
     }),
     AuthModule,
     // AdminModule,
@@ -44,6 +48,8 @@ import { User } from './user/user.entity';
     // ReviewModule,
     NotificationsModule,
     // TransactionsModule,
+    SellerModule,
+    UserModule,
   ],
 })
 export class AppModule {}
