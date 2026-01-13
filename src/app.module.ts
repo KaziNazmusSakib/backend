@@ -1,4 +1,3 @@
- 
 // src/app.module.ts (updated)
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -6,19 +5,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 // import { AdminModule } from './admin/admin.module';
 import { BuyerModule } from './buyer/buyer.module';
-// import { SellerModule } from './seller/seller.module';
-// import { SupplierModule } from './supplier/supplier.module';
+import { SellerModule } from './seller/seller.module';
+import { SupplierModule } from './supplier/supplier.module';
 import { ProductModule } from './product/product.module';
 import { OrderModule } from './order/order.module';
-// import { CategoryModule } from './category/category.module';
-// import { CartModule } from './cart/cart.module';
-// import { ReviewModule } from './review/review.module';
+import { CategoryModule } from './category/category.module';
+import { CartModule } from './cart/cart.module';
+import { ReviewModule } from './review/review.module';
 import { NotificationsModule } from './notifications/notifications.module';
-// import { TransactionsModule } from './transactions/transactions.module';
+import { TransactionsModule } from './transactions/transactions.module';
 import { User } from './user/user.entity';
-import { AuthModule } from './modules/auth/auth.module';
-import { SellerModule } from './modules/seller/seller.module';
-import { UserModule } from './modules/user/user.module';
+//import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -39,17 +36,17 @@ import { UserModule } from './modules/user/user.module';
     AuthModule,
     // AdminModule,
     BuyerModule,
-    // SellerModule,
-    // SupplierModule,
+    SellerModule,
+    SupplierModule,
     ProductModule,
     OrderModule,
-    // CategoryModule,
-    // CartModule,
-    // ReviewModule,
+    CategoryModule,
+    CartModule,
+    ReviewModule,
     NotificationsModule,
-    // TransactionsModule,
+    TransactionsModule,
     SellerModule,
-    UserModule,
+    //UserModule,
   ],
 })
 export class AppModule {}
