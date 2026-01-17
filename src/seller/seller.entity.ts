@@ -11,4 +11,5 @@ export class Seller extends User {
  
   @Column({ nullable: true })
   storeDescription: string;
+  products: any;
 }
