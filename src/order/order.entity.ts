@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { Buyer } from '../buyer/buyer.entity';
+import { Seller } from '../seller/seller.entity';
 import { OrderItem } from './order-item.entity';
 
 @Entity('orders')
@@ -7,18 +8,18 @@ export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column()
+  status: string;
+
   @Column('decimal')
   totalAmount: number;
 
-  @Column({ default: 'pending' })
-  status: string;
-
-  @ManyToOne(() => Buyer, buyer => buyer.orders)
+  @ManyToOne(() => Buyer, (buyer) => buyer.orders)
   buyer: Buyer;
 
-  @OneToMany(() => OrderItem, item => item.order)
-  items: OrderItem[];
+  @ManyToOne(() => Seller, (seller) => seller.orders)
+  seller: Seller;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @OneToMany(() => OrderItem, (item) => item.order)
+  orderItems: OrderItem[];
 }

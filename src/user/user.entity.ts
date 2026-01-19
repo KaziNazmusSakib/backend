@@ -1,12 +1,16 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+
+export enum UserRole {
+  BUYER = 'buyer',
+  SELLER = 'seller',
+  SUPPLIER = 'supplier',
+  ADMIN = 'admin',
+}
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ nullable: true }) // ← Allow NULL initially
-  name: string;
 
   @Column({ unique: true })
   email: string;
@@ -14,8 +18,8 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ default: 'buyer' })
-  role: string;
+  @Column({ type: 'enum', enum: UserRole })
+  role: UserRole;
 
   @CreateDateColumn()
   createdAt: Date;

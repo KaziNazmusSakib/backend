@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { User } from '../user/user.entity';
 
 @Entity('notifications')
 export class Notification {
@@ -6,14 +7,14 @@ export class Notification {
   id: number;
 
   @Column()
-  userId: number;
-
-  @Column()
   message: string;
 
-  @Column({ default: false })
-  read: boolean;
+  @Column()
+  type: string;
 
-  @CreateDateColumn()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
+
+  @ManyToOne(() => User, (user) => user.id)
+  user: User;
 }

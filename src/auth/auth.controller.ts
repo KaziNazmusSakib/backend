@@ -1,25 +1,28 @@
-import { Controller, Post, Body, Get, UseGuards, Request } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDto, RegisterDto } from './auth.dto';
-import { JwtAuthGuard } from '../common/guards/jwt.guard';
+import { LoginDto, BuyerRegisterDto, SellerRegisterDto, SupplierRegisterDto } from './auth.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Post('login')
   async login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
   }
 
-  @Post('register')
-  async register(@Body() dto: RegisterDto) {
-    return this.authService.register(dto);
+  @Post('register/buyer')
+  async registerBuyer(@Body() dto: BuyerRegisterDto) {
+    return this.authService.register({ ...dto, role: 'buyer' });
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
+  @Post('register/seller')
+  async registerSeller(@Body() dto: SellerRegisterDto) {
+    return this.authService.register({ ...dto, role: 'seller' });
+  }
+
+  @Post('register/supplier')
+  async registerSupplier(@Body() dto: SupplierRegisterDto) {
+    return this.authService.register({ ...dto, role: 'supplier' });
   }
 }

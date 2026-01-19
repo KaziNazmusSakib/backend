@@ -1,50 +1,45 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+
 import { AuthModule } from './auth/auth.module';
 import { BuyerModule } from './buyer/buyer.module';
 import { SellerModule } from './seller/seller.module';
 import { SupplierModule } from './supplier/supplier.module';
+import { AdminModule } from './admin/admin.module';
 import { ProductModule } from './product/product.module';
 import { OrderModule } from './order/order.module';
-import { CategoryModule } from './category/category.module';
 import { CartModule } from './cart/cart.module';
-import { ReviewModule } from './review/review.module';
+import { CategoryModule } from './category/category.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { ReviewModule } from './review/review.module';
 import { TransactionsModule } from './transactions/transactions.module';
-import { User } from './user/user.entity';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DB_HOST || 'localhost',
+      host: process.env.DB_HOST,
       port: parseInt(process.env.DB_PORT || '5432') || 5432,
-      username: process.env.DB_USERNAME || 'postgres',
-      password: process.env.DB_PASSWORD || 'Admin',
-      database: process.env.DB_NAME || 'NexifyStore',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: process.env.NODE_ENV !== 'production',
-      logging: process.env.NODE_ENV === 'development',
+      username: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.DB_NAME,
+      autoLoadEntities: true,
+      synchronize: true,  
     }),
     AuthModule,
     BuyerModule,
     SellerModule,
     SupplierModule,
+    AdminModule,
     ProductModule,
     OrderModule,
-    CategoryModule,
     CartModule,
-    ReviewModule,
+    CategoryModule,
     NotificationsModule,
+    ReviewModule,
     TransactionsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

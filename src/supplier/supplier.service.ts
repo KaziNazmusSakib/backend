@@ -1,20 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 import { Supplier } from './supplier.entity';
- 
+import { SupplierRegisterDto } from './supplier.dto';
+
 @Injectable()
 export class SupplierService {
   constructor(
     @InjectRepository(Supplier)
-    private supplierRepo: Repository<Supplier>,
+    private supplierRepository: Repository<Supplier>,
   ) {}
- 
-  findAll() {
-    return this.supplierRepo.find();
+
+  async register(dto: SupplierRegisterDto) {
+    const hashedPassword = await bcrypt.hash(dto.password, 10);
+    const supplier = this.supplierRepository.create({ ...dto, password: hashedPassword });
+    return this.supplierRepository.save(supplier);
   }
- 
-  findOne(id: number) {
-    return this.supplierRepo.findOne({ where: { id } });
+
+  async findAll() {
+    return this.supplierRepository.find();
+  }
+
+  async findOne(id: number) {
+    return this.supplierRepository.findOne({ where: { id } });
   }
 }

@@ -4,32 +4,31 @@ import { Repository } from 'typeorm';
 import { Cart } from './cart.entity';
 import { CartItem } from './cart-item.entity';
 import { AddToCartDto } from './cart.dto';
- 
+
 @Injectable()
 export class CartService {
   constructor(
     @InjectRepository(Cart)
-    private cartRepo: Repository<Cart>,
+    private cartRepository: Repository<Cart>,
     @InjectRepository(CartItem)
-    private itemRepo: Repository<CartItem>,
+    private cartItemRepository: Repository<CartItem>,
   ) {}
- 
-  getCart(userId: number) {
-    return this.cartRepo.findOne({ where: { userId }, relations: ['items'] });
-  }
- 
+
   async addToCart(dto: AddToCartDto) {
-    let cart = await this.cartRepo.findOne({ where: { userId: dto.userId } });
+    let cart = await this.cartRepository.findOne({ where: { buyer: { id: dto.buyerId } }, relations: ['cartItems'] });
     if (!cart) {
-      cart = this.cartRepo.create({ userId: dto.userId });
-      await this.cartRepo.save(cart);
+      cart = this.cartRepository.create({ buyer: { id: dto.buyerId } as any });
+      cart = await this.cartRepository.save(cart);
     }
-    const item = this.itemRepo.create({ ...dto, cart });
-    await this.itemRepo.save(item);
-    return cart;
+    const item = this.cartItemRepository.create({
+      cart,
+      product: { id: dto.productId } as any,
+      quantity: dto.quantity,
+    });
+    return this.cartItemRepository.save(item);
   }
- 
-  async removeItem(itemId: number) {
-    return this.itemRepo.delete(itemId);
+
+  async getCart(buyerId: number) {
+    return this.cartRepository.findOne({ where: { buyer: { id: buyerId } }, relations: ['cartItems', 'cartItems.product'] });
   }
 }

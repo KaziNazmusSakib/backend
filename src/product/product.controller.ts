@@ -1,25 +1,33 @@
-import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Put, Delete } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './product.dto';
-import { JwtAuthGuard } from '../common/guards/jwt.guard';
 
-@Controller('product')
+@Controller('products')
 export class ProductController {
-  constructor(private productService: ProductService) {}
+  constructor(private readonly service: ProductService) {}
+
+  @Post()
+  create(@Body() dto: CreateProductDto) {
+    return this.service.create(dto);
+  }
 
   @Get()
-  getAll() {
-    return this.productService.findAll();
+  findAll() {
+    return this.service.findAll();
   }
 
   @Get(':id')
-  getOne(@Param('id') id: string) {
-    return this.productService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.service.findOne(id);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Post()
-  create(@Body() dto: CreateProductDto) {
-    return this.productService.create(dto);
+  @Put(':id')
+  update(@Param('id') id: number, @Body() dto: Partial<CreateProductDto>) {
+    return this.service.update(id, dto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: number) {
+    return this.service.remove(id);
   }
 }

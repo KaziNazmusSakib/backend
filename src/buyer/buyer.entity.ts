@@ -1,12 +1,31 @@
-import { Entity, Column } from 'typeorm';
-import { User } from '../user/user.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn } from 'typeorm';
+import { Order } from '../order/order.entity';
+import { Cart } from '../cart/cart.entity';
 
 @Entity('buyers')
-export class Buyer extends User {
-  @Column({ default: 'buyer' })
-  declare role: string;
+export class Buyer {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @Column('text', { nullable: true })
-  shippingAddress: string;
-  orders: any;
+  @Column()
+  name: string;
+
+  @Column({ unique: true })
+  email: string;
+
+  @Column()
+  password: string;
+
+  @Column()
+  address: string;
+
+  @Column()
+  phone: string;
+
+  @OneToMany(() => Order, (order) => order.buyer)
+  orders: Order[];
+
+  @OneToOne(() => Cart, (cart) => cart.buyer)
+  @JoinColumn()
+  cart: Cart;
 }

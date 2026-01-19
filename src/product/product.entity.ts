@@ -1,34 +1,37 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn } from 'typeorm';
-import { Category } from '../category/category.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 import { Seller } from '../seller/seller.entity';
+import { Supplier } from '../supplier/supplier.entity';
+import { Category } from '../category/category.entity';
+import { Review } from '../review/review.entity';
 
 @Entity('products')
 export class Product {
+  [x: string]: any;
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   name: string;
 
-  @Column('text')
+  @Column()
   description: string;
 
   @Column('decimal')
   price: number;
 
-  @Column()
+  @Column('int')
   stock: number;
 
-  @Column({ nullable: true })
-  imageUrl: string;
-
-  @ManyToOne(() => Category, category => category.products)
-  category: Category;
-
-  @ManyToOne(() => Seller, seller => seller.products)
+  @ManyToOne(() => Seller, (seller) => seller.products)
   seller: Seller;
 
-  @CreateDateColumn()
-  createdAt: Date;
-   
+  @ManyToOne(() => Supplier, (supplier) => supplier.products)
+  supplier: Supplier;
+
+  @ManyToMany(() => Category, (category) => category.products)
+  @JoinTable()
+  categories: Category[];
+
+  @OneToMany(() => Review, (review) => review.product)
+  reviews: Review[];
 }

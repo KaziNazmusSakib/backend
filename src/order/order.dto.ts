@@ -1,23 +1,12 @@
-import { IsNumber, IsArray, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
-
-class OrderItemDto {
-  @IsNumber()
-  productId: number;
-
-  @IsNumber()
-  quantity: number;
-
-  @IsNumber()
-  price: number;
-}
+import { IsNumber } from 'class-validator';
 
 export class CreateOrderDto {
   @IsNumber()
   buyerId: number;
 
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => OrderItemDto)
-  items: OrderItemDto[];
+  @IsNumber()
+  sellerId: number;
+
+  @IsNumber()
+  totalAmount: number;
 }

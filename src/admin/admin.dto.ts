@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class CreateCategoryDto {
+export class AdminActionDto {
   @IsString()
-  name: string;
+  action: string;
 }

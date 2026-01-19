@@ -1,16 +1,16 @@
 import { IsEmail, IsString, MinLength } from 'class-validator';
- 
-export class CreateSupplierDto {
-  @IsString()
-  name: string;
- 
-  @IsEmail()
-  email: string;
- 
-  @IsString()
-  @MinLength(6)
-  password: string;
- 
+
+export class SupplierRegisterDto {
   @IsString()
   companyName: string;
+
+  @IsString()
+  contactNumber: string;
+
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  @MinLength(8)
+  password: string;
 }

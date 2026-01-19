@@ -1,6 +1,6 @@
 import { IsEmail, IsString, MinLength } from 'class-validator';
 
-export class CreateBuyerDto {
+export class BuyerRegisterDto {
   @IsString()
   name: string;
 
@@ -8,6 +8,12 @@ export class CreateBuyerDto {
   email: string;
 
   @IsString()
-  @MinLength(6)
+  @MinLength(8)
   password: string;
+
+  @IsString()
+  address: string;
+
+  @IsString()
+  phone: string;
 }

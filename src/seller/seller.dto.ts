@@ -1,16 +1,19 @@
 import { IsEmail, IsString, MinLength } from 'class-validator';
- 
-export class CreateSellerDto {
+
+export class SellerRegisterDto {
   @IsString()
-  name: string;
- 
+  shopName: string;
+
+  @IsString()
+  shopAddress: string;
+
+  @IsString()
+  phone: string;
+
   @IsEmail()
   email: string;
- 
+
   @IsString()
-  @MinLength(6)
+  @MinLength(8)
   password: string;
- 
-  @IsString()
-  storeName: string;
 }

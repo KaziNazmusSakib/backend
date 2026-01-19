@@ -3,24 +3,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Category } from './category.entity';
 import { CreateCategoryDto } from './category.dto';
- 
+
 @Injectable()
 export class CategoryService {
   constructor(
     @InjectRepository(Category)
-    private categoryRepo: Repository<Category>,
+    private categoryRepository: Repository<Category>,
   ) {}
- 
-  findAll() {
-    return this.categoryRepo.find();
+
+  async create(dto: CreateCategoryDto) {
+    const category = this.categoryRepository.create(dto);
+    return this.categoryRepository.save(category);
   }
- 
-  findOne(id: number) {
-    return this.categoryRepo.findOne({ where: { id } });
-  }
- 
-  create(dto: CreateCategoryDto) {
-    const category = this.categoryRepo.create(dto);
-    return this.categoryRepo.save(category);
+
+  async findAll() {
+    return this.categoryRepository.find({ relations: ['products'] });
   }
 }
